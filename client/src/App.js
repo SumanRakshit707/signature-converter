@@ -189,9 +189,13 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await axios.post('https://digital-signature-creator-by-suman.onrender.com/api/process-signature', formData, {
-        responseType: 'blob',
-      });
+      const res = await axios.post(
+        'https://digital-signature-creator-by-suman.onrender.com/api/process-signature',
+        formData,
+        {
+          responseType: 'blob',
+        }
+      );
 
       const blob = new Blob([res.data], { type: 'image/png' });
       const url = URL.createObjectURL(blob);
@@ -206,7 +210,6 @@ function App() {
   return (
     <div className="container">
       <h1>PNG Signature Creator</h1>
-      <h2>Fun Project By Suman<h2>
       <form onSubmit={handleSubmit}>
         <label>
           Upload Signature:
@@ -244,3 +247,4 @@ function App() {
 }
 
 export default App;
+
