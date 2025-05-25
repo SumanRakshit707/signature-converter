@@ -1,4 +1,4 @@
-
+//version 1
 // import React, { useState } from 'react';
 // import axios from 'axios';
 
@@ -82,6 +82,89 @@
 // };
 
 // export default App;
+
+//version 2
+// import React, { useState } from 'react';
+// import axios from 'axios';
+// import './App.css';
+
+// function App() {
+//   const [image, setImage] = useState(null);
+//   const [color, setColor] = useState('#000000');
+//   const [result, setResult] = useState(null);
+//   const [loading, setLoading] = useState(false);
+
+//   const handleImageChange = (e) => {
+//     setImage(e.target.files[0]);
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     if (!image) return;
+
+//     const formData = new FormData();
+//     formData.append('image', image);
+//     formData.append('color', color);
+//     setLoading(true);
+
+//     try {
+//       const res = await axios.post('http://localhost:5000/api/process-signature', formData, {
+//         responseType: 'blob',
+//       });
+
+//       const blob = new Blob([res.data], { type: 'image/png' });
+//       const url = URL.createObjectURL(blob);
+//       setResult(url);
+//     } catch (err) {
+//       alert('Failed to process signature');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="container">
+//       <h1>PNG Signature Creator</h1>
+//       <form onSubmit={handleSubmit}>
+//         <label>
+//           Upload Signature:
+//           <input type="file" accept="image/*" onChange={handleImageChange} />
+//         </label>
+
+//         <label>
+//           Select Ink Color:
+//           <div className="color-picker">
+//             <input
+//               type="color"
+//               value={color}
+//               onChange={(e) => setColor(e.target.value)}
+//             />
+//             <span className="hex-code">{color.toUpperCase()}</span>
+//           </div>
+//         </label>
+
+
+//         <button type="submit" disabled={loading}>
+//           {loading ? 'Creating PNG' : 'Create'}
+//         </button>
+//       </form>
+
+//       {result && (
+//         <div className="result">
+//           <h2>Your Signature is Ready</h2>
+//           <img src={result} alt="Processed Signature" />
+//           <a href={result} download="signature.png">
+//             <button>Download</button>
+//           </a>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default App;
+
+//version 3
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -106,7 +189,7 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/process-signature', formData, {
+      const res = await axios.post('https://signature-backend-dvxn.onrender.com/api/process-signature', formData, {
         responseType: 'blob',
       });
 
@@ -140,7 +223,6 @@ function App() {
             <span className="hex-code">{color.toUpperCase()}</span>
           </div>
         </label>
-
 
         <button type="submit" disabled={loading}>
           {loading ? 'Creating PNG' : 'Create'}
