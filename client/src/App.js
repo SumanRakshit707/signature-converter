@@ -255,19 +255,15 @@ import SignatureCanvas from 'react-signature-canvas';
 import './App.css';
 
 function App() {
-  const [mode, setMode] = useState('upload'); // 'upload' or 'draw'
   const [image, setImage] = useState(null);
   const [color, setColor] = useState('#000000');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState('upload'); // 'upload' or 'draw'
   const sigCanvas = useRef(null);
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
-  };
-
-  const handleClear = () => {
-    sigCanvas.current.clear();
   };
 
   const handleSubmit = async (e) => {
@@ -276,15 +272,26 @@ function App() {
     setResult(null);
 
     try {
-      let formData = new FormData();
-
       if (mode === 'upload') {
         if (!image) {
           alert('Please upload a signature image.');
           setLoading(false);
           return;
         }
+
+        const formData = new FormData();
         formData.append('image', image);
+        formData.append('color', color);
+
+        const res = await axios.post(
+          'https://digital-signature-creator-by-suman.onrender.com/api/process-signature',
+          formData,
+          { responseType: 'blob' }
+        );
+
+        const blob = new Blob([res.data], { type: 'image/png' });
+        const url = URL.createObjectURL(blob);
+        setResult(url);
       } else {
         if (sigCanvas.current.isEmpty()) {
           alert('Please draw your signature.');
@@ -292,27 +299,19 @@ function App() {
           return;
         }
 
+        // Generate PNG from canvas
         const dataUrl = sigCanvas.current.toDataURL('image/png');
-        const blob = await fetch(dataUrl).then(res => res.blob());
-        formData.append('image', blob, 'drawn-signature.png');
+        setResult(dataUrl);
       }
-
-      formData.append('color', color);
-
-      const res = await axios.post(
-        'https://digital-signature-creator-by-suman.onrender.com/api/process-signature',
-        formData,
-        { responseType: 'blob' }
-      );
-
-      const blob = new Blob([res.data], { type: 'image/png' });
-      const url = URL.createObjectURL(blob);
-      setResult(url);
     } catch (err) {
       alert('Failed to process signature');
     } finally {
       setLoading(false);
     }
+  };
+
+  const clearCanvas = () => {
+    sigCanvas.current.clear();
   };
 
   return (
@@ -324,16 +323,14 @@ function App() {
         <button
           className={mode === 'upload' ? 'active' : ''}
           onClick={() => setMode('upload')}
-          type="button"
         >
-          Upload
+          Upload Image
         </button>
         <button
           className={mode === 'draw' ? 'active' : ''}
           onClick={() => setMode('draw')}
-          type="button"
         >
-          Draw
+          Draw Signature
         </button>
       </div>
 
@@ -352,9 +349,7 @@ function App() {
               canvasProps={{ className: 'sigCanvas' }}
               ref={sigCanvas}
             />
-            <button type="button" onClick={handleClear}>
-              Clear
-            </button>
+            <button type="button" onClick={clearCanvas}>Clear</button>
           </div>
         )}
 
