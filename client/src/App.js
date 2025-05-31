@@ -386,131 +386,30 @@
 // export default App;
 
 
-import React, { useRef, useState } from 'react';
-import SignatureCanvas from 'react-signature-canvas';
-import axios from 'axios';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import DrawSignature from './pages/DrawSignature';
+import UploadSignature from './pages/UploadSignature';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import './App.css';
 
 function App() {
-  const [mode, setMode] = useState('upload');
-  const [image, setImage] = useState(null);
-  const [color, setColor] = useState('#000000');
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const sigCanvasRef = useRef();
-
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
-
-  const handleClear = () => {
-    sigCanvasRef.current.clear();
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setResult(null);
-
-    if (mode === 'upload') {
-      if (!image) {
-        alert('Please upload an image');
-        setLoading(false);
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('image', image);
-      formData.append('color', color);
-
-      try {
-        const res = await axios.post(
-          'https://digital-signature-creator-by-suman.onrender.com/api/process-signature',
-          formData,
-          { responseType: 'blob' }
-        );
-        const url = URL.createObjectURL(new Blob([res.data], { type: 'image/png' }));
-        setResult(url);
-      } catch {
-        alert('Failed to process signature');
-      }
-    } else {
-      const dataURL = sigCanvasRef.current.getTrimmedCanvas().toDataURL('image/png');
-      setResult(dataURL);
-    }
-
-    setLoading(false);
-  };
-
   return (
-    <div className="container">
-      {/* HEADER */}
-      <header className="header" style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
-        <div className="logo-circle" style={{ width: 60, height: 60, borderRadius: '50%', overflow: 'hidden', marginRight: 15 }}>
-          <img src="/logo.png" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </div>
-        <h1 className="title" style={{ fontSize: '1.8rem' }}>Digital Signature Creator</h1>
-      </header>
-
-      {/* MODE TOGGLE */}
-      <div className="mode-toggle">
-        <button onClick={() => setMode('upload')} className={mode === 'upload' ? 'active' : ''}>
-          Upload Signature
-        </button>
-        <button onClick={() => setMode('draw')} className={mode === 'draw' ? 'active' : ''}>
-          Draw Signature
-        </button>
+    <Router>
+      <div className="app-container">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/draw" element={<DrawSignature />} />
+          <Route path="/upload" element={<UploadSignature />} />
+        </Routes>
+        <Footer />
       </div>
-
-      {/* FORM */}
-      <form onSubmit={handleSubmit}>
-        {mode === 'upload' ? (
-          <label>
-            Upload Signature:
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-          </label>
-        ) : (
-          <>
-            <div className="signature-pad">
-              <SignatureCanvas
-                penColor={color}
-                canvasProps={{ className: 'sigCanvas' }}
-                ref={sigCanvasRef}
-              />
-            </div>
-            <button type="button" onClick={handleClear}>Clear</button>
-          </>
-        )}
-
-        <label>
-          Select Ink Color:
-          <div className="color-picker">
-            <input
-              type="color"
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-            />
-            <span className="hex-code">{color.toUpperCase()}</span>
-          </div>
-        </label>
-
-        <button type="submit" disabled={loading}>
-          {loading ? 'Processing...' : 'Create PNG'}
-        </button>
-      </form>
-
-      {/* RESULT */}
-      {result && (
-        <div className="result">
-          <h2>Your Signature is Ready</h2>
-          <img src={result} alt="Processed Signature" />
-          <a href={result} download="signature.png">
-            <button>Download</button>
-          </a>
-        </div>
-      )}
-    </div>
+    </Router>
   );
 }
 
 export default App;
+
