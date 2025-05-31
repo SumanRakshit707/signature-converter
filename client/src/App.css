@@ -233,151 +233,71 @@ button[disabled] {
 /* App.css */
 
 body {
+  font-family: 'Arial', sans-serif;
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f5f7fa;
-  color: #333;
+  padding: 0;
+  background: #f7f7f7;
 }
 
-.container {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 25px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-header.header {
+.header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
+  padding: 1rem;
 }
 
 .logo-circle {
   width: 60px;
   height: 60px;
   border-radius: 50%;
+  background: white;
   overflow: hidden;
-  background-color: #007bff1c;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-.logo-circle img {
+.logo-img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
 }
 
+
 .title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #007bff;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
-h1,
-h2 {
+.footer {
   text-align: center;
-  margin: 0 0 15px;
+  padding: 1rem;
+  font-size: 0.9rem;
+  margin-top: 2rem;
 }
 
-form {
+.home, .draw-page, .upload-page {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-label {
-  font-weight: 600;
-  color: #555;
-}
-
-input[type="file"],
-input[type="color"] {
-  margin-top: 8px;
-}
-
-.color-picker {
-  display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 5px;
+  padding: 2rem;
 }
 
-.hex-code {
-  font-family: monospace;
-  background: #e1e1e1;
-  padding: 5px 10px;
-  border-radius: 6px;
-}
-
-button {
-  padding: 12px;
-  background: #007bff;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
+.btn, button {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  margin: 1rem;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
-button:hover:not([disabled]) {
-  background: #0056b3;
-}
-
-button[disabled] {
-  background: #a0c4ff;
-  cursor: not-allowed;
-}
-
-.result {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.result img {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 10px;
-}
-
-.mode-toggle {
+.signature-canvas {
+  border: 1px solid gray;
+  background-color: white;
   margin: 1rem 0;
-  text-align: center;
 }
 
-.mode-toggle button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background-color: #fff;
+.draw-actions button {
+  margin: 0.5rem;
 }
 
-.mode-toggle .active {
-  background-color: #007bff;
-  color: #fff;
-  border-color: #007bff;
-}
-
-.signature-pad {
-  border: 2px dashed #ccc;
-  border-radius: 8px;
-  margin-top: 15px;
-  position: relative;
-  height: 200px;
-  background: #fff;
-}
-
-.sigCanvas {
-  width: 100%;
-  height: 100%;
-}
 
