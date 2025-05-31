@@ -388,9 +388,9 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import DrawSignature from './pages/DrawSignature';
-import UploadSignature from './pages/UploadSignature';
+import Home from './Pages/Home';
+import DrawSignature from './Pages/DrawSignature';
+import UploadSignature from './Pages/UploadSignature';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import './App.css';
